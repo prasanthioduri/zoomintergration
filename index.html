@@ -6,7 +6,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="origin-trial" 
-        content="ApbyCprSSGVaT3D3B6PtIv+n/9OBJNNvn90FOjL7bJcSHnPiF3EWtIu0cucMH4cSEaJfG+5/wMev1YBGHQNkHw0AAABLeyJvcmlnaW4iOiJodHRwczovLzAuMC4wLjA6MzAwMCIsImZlYXR1cmUiOiJXZWJDb2RlY3MiLCJleHBpcnkiOjE2MjYyMjA3OTl9"
+        content="Ajef7HX0RdfwBqZYrUVlvUHsQSXOEQiBvj0Olet0DgYa8gmqo+NB+1sFkxlFPC/dF+UI3qFa9KPqDkhpt25a5AsAAABeeyJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjgxIiwiZmVhdHVyZSI6IlVucmVzdHJpY3RlZFNoYXJlZEFycmF5QnVmZmVyIiwiZXhwaXJ5IjoxNjg4MDgzMTk5fQ=="
     >
     <!-- The link below is for the mic and camera icons in this demo -->
     <link 
@@ -18,6 +18,7 @@
 	<link rel="stylesheet" href="index.css" />
 	<script src="https://source.zoom.us/videosdk/zoom-video-1.7.0.min.js" as="script"></script>
 	 <script src="https://kjur.github.io/jsrsasign/jsrsasign-all-min.js"></script>
+	 
 </head>
 
 <body>
@@ -88,7 +89,7 @@ const client = VideoSDK.createClient()
 client.init('en-US', 'CDN')
 
 let stream
-let no_of_users=4
+let noofusers=3
 /*
 perms = {
 headers: {
@@ -165,6 +166,25 @@ function isSupportOffscreenCanvas(){
     Width: 1280,
     Height: 640,
 };
+
+class SimpleState {
+    constructor(){
+        this.reset();
+    }
+    reset(){
+        this.selfId = -1;
+        this.participants = [];
+        this.audioEncode = false;
+        this.audioDecode = false;
+        this.isStartedAudio = false;
+    }
+    resetParticipantId(){
+        this.participants = [];
+    }
+}
+new SimpleState();
+const state = new SimpleState
+
 let prevIsSelfVideoOn = false;
 let prevIsParticipantVideoOn = false;
 
@@ -198,10 +218,13 @@ let prevIsParticipantVideoOn = false;
  */
 
  const toggleSelfVideo = async (mediaStream, isVideoOn) => {
+
   const isUsingVideoElementToStartVideo =
     typeof window.OffscreenCanvas === 'function' && !mediaStream.isSupportMultipleVideos();
+	
   const isRenderingSingleVideoOnCanvas =
     typeof window.OffscreenCanvas !== 'function' && !mediaStream.isSupportMultipleVideos();
+	
   if (typeof isVideoOn !== 'boolean' || prevIsSelfVideoOn === isVideoOn) {
     return;
   }
@@ -212,6 +235,7 @@ let prevIsParticipantVideoOn = false;
       SELF_VIDEO_ELEMENT.style.width = '50%';
       SELF_VIDEO_ELEMENT.style.left = '50%';
       await mediaStream.startVideo({ videoElement: SELF_VIDEO_ELEMENT });
+	   
     } else {
       await mediaStream.startVideo();
       if (isRenderingSingleVideoOnCanvas) {
@@ -224,8 +248,8 @@ let prevIsParticipantVideoOn = false;
         await mediaStream.renderVideo(
           canvas,
           state.selfId,
-          VIDEO_CANVAS_DIMS.Width / no_of_users,
-          VIDEO_CANVAS_DIMS.Height / no_of_users,
+          VIDEO_CANVAS_DIMS.Width / noofusers,
+          VIDEO_CANVAS_DIMS.Height / noofusers,
           0,
           0,
           VideoQuality.Video_360P
@@ -234,9 +258,9 @@ let prevIsParticipantVideoOn = false;
         await mediaStream.renderVideo(
           canvas,
           state.selfId,
-          VIDEO_CANVAS_DIMS.Width / no_of_users,
+          VIDEO_CANVAS_DIMS.Width / noofusers,
           VIDEO_CANVAS_DIMS.Height,
-          VIDEO_CANVAS_DIMS.Width / no_of_users,
+          VIDEO_CANVAS_DIMS.Width / noofusers,
           0,
           VideoQuality.Video_360P
         );
@@ -262,10 +286,11 @@ let prevIsParticipantVideoOn = false;
   }
 
   if (isVideoOn) {
+ 
     await mediaStream.renderVideo(
       VIDEO_CANVAS,
       userId,
-      VIDEO_CANVAS_DIMS.Width / 2,
+      VIDEO_CANVAS_DIMS.Width / noofusers,
       VIDEO_CANVAS_DIMS.Height,
       0,
       0,
@@ -772,22 +797,6 @@ const Views = {
     Views.End.classList.toggle('hidden');
 };
 
-class SimpleState {
-    constructor(){
-        this.reset();
-    }
-    reset(){
-        this.selfId = -1;
-        this.participants = [];
-        this.audioEncode = false;
-        this.audioDecode = false;
-        this.isStartedAudio = false;
-    }
-    resetParticipantId(){
-        this.participants = [];
-    }
-}
-new SimpleState();
-const state = new SimpleState
+
 </script
 </html>
