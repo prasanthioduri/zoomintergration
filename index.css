@@ -1,4 +1,4 @@
-/* Globally set text font to a sans-serif font */
+<style>/* Globally set text font to a sans-serif font */
 * {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 250;
@@ -227,4 +227,27 @@ body {
   width: 100%;
   height: 100%;
 }
+.participant {
+  background-color: #118AB2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-height: 100vh;
+  margin: auto;
+}
+
+.self {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 20%;
+  aspect-ratio: 16/9;
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+}
+
 
