@@ -5,21 +5,17 @@
     <meta charset="utf-8" />
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta http-equiv="origin-trial" 
-        content="Ajef7HX0RdfwBqZYrUVlvUHsQSXOEQiBvj0Olet0DgYa8gmqo+NB+1sFkxlFPC/dF+UI3qFa9KPqDkhpt25a5AsAAABeeyJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjgxIiwiZmVhdHVyZSI6IlVucmVzdHJpY3RlZFNoYXJlZEFycmF5QnVmZmVyIiwiZXhwaXJ5IjoxNjg4MDgzMTk5fQ=="
-    >
+    <meta http-equiv="origin-trial"
+        content="Ajef7HX0RdfwBqZYrUVlvUHsQSXOEQiBvj0Olet0DgYa8gmqo+NB+1sFkxlFPC/dF+UI3qFa9KPqDkhpt25a5AsAAABeeyJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjgxIiwiZmVhdHVyZSI6IlVucmVzdHJpY3RlZFNoYXJlZEFycmF5QnVmZmVyIiwiZXhwaXJ5IjoxNjg4MDgzMTk5fQ==">
     <!-- The link below is for the mic and camera icons in this demo -->
-    <link 
-        rel="stylesheet" 
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" 
-        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" 
-        crossorigin="anonymous" 
-    />
-	<link rel="stylesheet" href="index.css" />
-	<script src="https://source.zoom.us/videosdk/zoom-video-1.7.0.min.js" as="script"></script>
-	 <script src="https://kjur.github.io/jsrsasign/jsrsasign-all-min.js"></script>
-	 
-	 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="index.css" />
+    <script src="https://source.zoom.us/videosdk/zoom-video-1.7.0.min.js" as="script"></script>
+    <script src="https://kjur.github.io/jsrsasign/jsrsasign-all-min.js"></script>
+
+
 </head>
 
 <body>
@@ -53,14 +49,14 @@
         </div>
         <!-- In-session view -->
         <div id="js-video-view" class="container video-app hidden">
-		
-		<div class="participant">
-            <canvas id="video-canvas" class="video-canvas" width="1280" height="640"></canvas>
-			</div>
-			  <div class="self">
-            <video id="self-video" class="self-video  "></video>
-            <canvas id="self-video-canvas" class="self-video-canvas" width="640" height="360"></canvas>
-			</div>
+
+            <div class="participant">
+                <canvas id="video-canvas" class="video-canvas" width="1280" height="640"></canvas>
+            </div>
+            <div class="self">
+                <video id="self-video" class="self-video  "></video>
+                <canvas id="self-video-canvas" class="self-video-canvas" width="640" height="360"></canvas>
+            </div>
             <div class="container meeting-control-layer">
                 <!-- "fas" and "fa" are icon prefixes for the font-awesome library -->
                 <button id="js-mic-button" class="meeting-control-button">
@@ -69,13 +65,18 @@
                 <button id="js-webcam-button" class="meeting-control-button">
                     <i id="js-webcam-icon" class="fas fa-video webcam__off"></i>
                 </button>
+                <button id="js-share-button" class="meeting-control-button">
+                    <i id="js-share-session-icon" class="fas fa-share"></i>
+                </button>
+                <button id="js-share-off-button" class="meeting-control-button">
+                    <i id="js-share-session-icon" class="fas fa-share" style="color:red"></i>
+                </button>
                 <div class="vertical-divider"></div>
-                <button id="js-leave-button" 
-                    class="meeting-control-button meeting-control-button__leave-session">
+                <button id="js-leave-button" class="meeting-control-button meeting-control-button__leave-session">
                     <i id="js-leave-session-icon" class="fas fa-phone"></i>
                 </button>
-				<button onClick="nextVideos()">Next Videos</button>
-				<button onClick="previousVideos()">Previous Videos</button>
+                <button onClick="nextVideos()">Next Videos</button>
+                <button onClick="previousVideos()">Previous Videos</button>
             </div>
         </div>
         <!-- Ending view -->
@@ -84,28 +85,28 @@
         </div>
     </div>
 </body>
- <script src="script.js"></script>
+<script src="script.js"></script>
 <script>
 
-let noofusers=3
-/*
-perms = {
-headers: {
-  'Access-Control-Allow-Origin': "*",
-  'Cross-Origin-Resource-Policy': "cross-origin",
-  'Cross-Origin-Embedder-Policy': "credentialless",
-  'Cross-Origin-Opener-Policy': "unsafe-none"
-}
-}
-//did nothing, but this has to be the right way
-*/
-   let sdkKey= 'c1AZcLpgiw5lLaf3b616dKPM4gPal1qV4THu'
-  let  sdkSecret= 'xSDP7mZxtLivrlj3LldVUuiubkATcQQbsXK2'
-   let topic= 'test'
-  let  password= '12345'
-  let  name= 'sarath'
- let   sessionKey= ''
-  let  user_identity= ''
+    let noofusers = 3
+    /*
+    perms = {
+    headers: {
+      'Access-Control-Allow-Origin': "*",
+      'Cross-Origin-Resource-Policy': "cross-origin",
+      'Cross-Origin-Embedder-Policy': "credentialless",
+      'Cross-Origin-Opener-Policy': "unsafe-none"
+    }
+    }
+    //did nothing, but this has to be the right way
+    */
+    let sdkKey = 'c1AZcLpgiw5lLaf3b616dKPM4gPal1qV4THu'
+    let sdkSecret = 'xSDP7mZxtLivrlj3LldVUuiubkATcQQbsXK2'
+    let topic = 'test'
+    let password = '12345'
+    let name = 'sarath'
+    let sessionKey = ''
+    let user_identity = ''
 </script>
 
 </html>

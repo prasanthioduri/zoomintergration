@@ -1,4 +1,4 @@
-<style>/* Globally set text font to a sans-serif font */
+/* <style>Globally set text font to a sans-serif font */
 * {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 250;
@@ -248,6 +248,10 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 20px;
+}
+
+#js-share-off-button{
+  display: none;
 }
 
 
