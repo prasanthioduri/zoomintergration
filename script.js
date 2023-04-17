@@ -120,34 +120,31 @@ let prevIsParticipantVideoOn = false;
 
  const toggleSelfVideo = async (mediaStream, isVideoOn) => {
 
-  alert(typeof window.OffscreenCanvas=='function')
-
-  alert(!mediaStream.isSupportMultipleVideos())
-
-  const isUsingVideoElementToStartVideo =typeof window.OffscreenCanvas === 'function' && !mediaStream.isSupportMultipleVideos();
-
-
-  alert(isUsingVideoElementToStartVideo)
-	
-  const isRenderingSingleVideoOnCanvas =typeof window.OffscreenCanvas !== 'function' && !mediaStream.isSupportMultipleVideos();
-  
-  
-  
+const isUsingVideoElementToStartVideo =typeof window.OffscreenCanvas === 'function' && !mediaStream.isSupportMultipleVideos();
+ const isRenderingSingleVideoOnCanvas =typeof window.OffscreenCanvas !== 'function' && !mediaStream.isSupportMultipleVideos();
+ 
   if (typeof isVideoOn !== 'boolean' || prevIsSelfVideoOn === isVideoOn) {
     return;
   }
   const canvas = isRenderingSingleVideoOnCanvas ? SELF_VIDEO_CANVAS : VIDEO_CANVAS;
- 
+  
+
+  
   if (isVideoOn) {
-    if (isUsingVideoElementToStartVideo) {
-		console.log('in the sarath')
-      SELF_VIDEO_ELEMENT.style.display = 'block';
+	  console.log('in is video on')
+	  if (isUsingVideoElementToStartVideo) {
+		  
+		//  console.log('in isUsingVideoElementToStartVideon')
+		  
+	  SELF_VIDEO_ELEMENT.style.display = 'block';
       SELF_VIDEO_ELEMENT.style.width = '50%';
       SELF_VIDEO_ELEMENT.style.left = '50%';
       await mediaStream.startVideo({ videoElement: SELF_VIDEO_ELEMENT });
     } else {
       await mediaStream.startVideo();
       if (isRenderingSingleVideoOnCanvas) {
+		  
+		    console.log('in else')
         SELF_VIDEO_CANVAS.style.display = 'block';
         SELF_VIDEO_CANVAS.style.width = '50%';
         SELF_VIDEO_CANVAS.style.height = '50%';
@@ -157,22 +154,28 @@ let prevIsParticipantVideoOn = false;
         await mediaStream.renderVideo(
           canvas,
           state.selfId,
-          VIDEO_CANVAS_DIMS.Width / 5,
-          VIDEO_CANVAS_DIMS.Height / 5,
+          VIDEO_CANVAS_DIMS.Width /2,
+          VIDEO_CANVAS_DIMS.Height /2,
           0,
           0,
           VideoQuality.Video_360P
         );
       } else {
-        await mediaStream.renderVideo(
+		  
+		toggleParticipantVideo(mediaStream, state.userId, true);
+			
+			
+		 /* console.log('test')
+
+		  await mediaStream.renderVideo(
           canvas,
           state.selfId,
-          VIDEO_CANVAS_DIMS.Width / 5,
+          VIDEO_CANVAS_DIMS.Width / 2,
           VIDEO_CANVAS_DIMS.Height,
-          VIDEO_CANVAS_DIMS.Width / 5,
+          VIDEO_CANVAS_DIMS.Width / 2,
           0,
           VideoQuality.Video_360P
-        );
+        );*/
       }
     }
   } else {
@@ -188,43 +191,66 @@ let prevIsParticipantVideoOn = false;
   }
   prevIsSelfVideoOn = isVideoOn;
 };
+const screenWidth = 1280;
+const screenHeight = 540;
 
  const toggleParticipantVideo = async (mediaStream, userId, isVideoOn) => {
-  if (typeof isVideoOn !== 'boolean' || prevIsParticipantVideoOn === isVideoOn) {
+  /*if (typeof isVideoOn !== 'boolean' || prevIsParticipantVideoOn === isVideoOn) {
     return;
-  }
-  
-let  peerParticipants1 = state.participants.filter((user) => user.userId !== state.selfId);
-
-  if (isVideoOn) {
-	  const screenWidth = 1280;
-const screenHeight = 540;
+  }*/
+ let  peerParticipants1 = state.participants.filter((user) => user.userId !== state.selfId);
+ 
+ //let  peerParticipants1 = state.participants;
+ 
+ let selfuser = state.participants.filter((user) => user.userId === state.selfId);
+ //	console.log('in else 3 selfuser--->' +selfuser[0].userId)
+	
+//console.log(peerParticipants1)
+ 
 const n = peerParticipants1.length;  // Replace with the desired number of rectangles
 const a = divideScreen(screenWidth, screenHeight, n);
-	for(var i=0;i<a.length;i++)
-		{
-			var width=a[i][2]-a[i][0]
+ 
+   // VIDEO_CANVAS.style.display = 'none';
+ //VIDEO_CANVAS.style.display = 'block';
+	
+ 
+ for(var i=0;i<peerParticipants1.length;i++)
+ {
+	// console.log("user id--->"+peerParticipants1[i].userId)
+	 
+	 if(selfuser[0].bVideoOn)
+	 {
+			console.log("self id--->"+selfuser[0].userId)
+		 	var width1=a[i][2]-a[i][0]
+			var height1=a[i][3]-a[i][1]
+			var x1=a[i][0];
+			var y1=a[i][1];
+			console.log(i,width1,height1,x1,y1)
+		  await mediaStream.renderVideo(VIDEO_CANVAS,selfuser[0].userId,width1,height1,x1+40,y1+40,3);		
+	 }
+	 
+	 if(peerParticipants1[i].bVideoOn)
+	 {
+		
+ 
+		 var width=a[i][2]-a[i][0]
 			var height=a[i][3]-a[i][1]
 			var x=a[i][0];
 			var y=a[i][1];
 			console.log(i,width,height,x,y)
-		 await mediaStream.renderVideo(VIDEO_CANVAS,peerParticipants1[i].userId,width+40,height+40,x,y,3);		
+			await mediaStream.renderVideo(VIDEO_CANVAS,peerParticipants1[i].userId,width,height,x+40,y+40,3);	
+			
+	 }
+	 else{
+		
+		 await mediaStream.stopRenderVideo(VIDEO_CANVAS, peerParticipants1[i].userId); 
+	 }
+	// prevIsParticipantVideoOn = isVideoOn; 
+ }
+ 
 
-		}		 
-	
- /*   await mediaStream.renderVideo(
-      VIDEO_CANVAS,
-      userId,
-      VIDEO_CANVAS_DIMS.Width / 5,
-      VIDEO_CANVAS_DIMS.Height,
-      0,
-      0,
-      VideoQuality.Video_360P
-    );*/
-  } else {
-    await mediaStream.stopRenderVideo(VIDEO_CANVAS, userId);
-  }
-  prevIsParticipantVideoOn = isVideoOn;
+ 
+  
 };
 
 /**
@@ -379,6 +405,7 @@ const onUserAddedListener = (zoomClient) => {
     console.log(`User added`, payload);
 
     state.participants = zoomClient.getAllUser();
+	
   });
 };
 
@@ -387,6 +414,7 @@ const onUserRemovedListener = (zoomClient) => {
     console.log(`User removed`, payload);
 
     state.participants = zoomClient.getAllUser();
+	
   });
 };
 
@@ -395,6 +423,7 @@ const onUserUpdatedListener = (zoomClient) => {
     console.log(`User updated`, payload);
 
     state.participants = zoomClient.getAllUser();
+	
   });
 };
 
@@ -431,9 +460,9 @@ const onMediaWorkerReadyListener = (zoomClient) => {
 };
 
 const initClientEventListeners = (zoomClient, mediaStream) => {
-  onUserAddedListener(zoomClient);
+  onUserAddedListener(zoomClient,mediaStream);
   onUserRemovedListener(zoomClient, mediaStream);
-  onUserUpdatedListener(zoomClient);
+  onUserUpdatedListener(zoomClient,mediaStream);
   onPeerVideoStateChangedListener(zoomClient, mediaStream);
   onMediaWorkerReadyListener(zoomClient);
   // The started video before join the session
